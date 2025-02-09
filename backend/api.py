@@ -182,8 +182,9 @@ def callAPI (requestedMacros):
     output = completion.choices[0].message.content
     print(output)
     
-    sectionedOutput(output)
+    title = sectionedOutput(output)
     
+    return {"title": title, "recipe": output}
     # print("***********************************************\n")
     
     # #sectionedOutput(completion.choices[0].message.content)

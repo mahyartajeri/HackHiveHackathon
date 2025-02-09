@@ -1,4 +1,4 @@
-FoodID,FoodCode,FoodGroupID,FoodSourceID,FoodDescription,FoodDescriptionF,FoodDateOfEntry,FoodDateOfPublication,CountryCode,ScientificName,"CARBOHYDRATE, TOTAL (BY DIFFERENCE)",ENERGY (KILOCALORIES),FAT (TOTAL LIPIDS),"FIBRE, TOTAL DIETARY",PROTEIN,"SUGARS, TOTAL"
+FoodID,FoodCode,FoodGroupID,FoodSourceID,FoodDescription,FoodDescriptionF,FoodDateOfEntry,FoodDateOfPublication,CountryCode,ScientificName,Carbs,Calories,Fats,Fibre,Protein,Sugars
 2,2,22,20,Cheese souffle,Soufflé au fromage,1981-01-01,,,,5.91,204.0,15.7,0.1,9.54,2.66
 4,4,22,20,"Chop suey, with meat, canned","Chop suey, avec viande, conserve",1981-01-01,,,,5.29,60.0,2.8,1.1,4.07,3.4
 5,5,22,0,"Chinese dish, chow mein, chicken","Mets chinois, chow mein, poulet",1981-01-01,,36623.0,,8.29,85.0,2.8,1.0,6.76,1.74

@@ -16,6 +16,10 @@ completion = client.chat.completions.create(
     {
       "role": "user",
       "content": "Give me a high protein meal for breakfasty"
+    },
+     {
+      "role": "system",
+      "content": "Return your recipes speaking in a lot of slang and abbreviations"
     }
   ]
 )

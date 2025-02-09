@@ -48,13 +48,13 @@ class _RecipeViewScreenState extends State<RecipeViewScreen> {
         padding: const EdgeInsets.only(bottom: 128),
         children: [
           Image.network(
-            widget.recipe.imageUrl,
+            '',
             fit: BoxFit.cover,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              widget.recipe.description,
+              'widget.recipe.description',
               style: theme.textTheme.bodyLarge,
             ),
           ),

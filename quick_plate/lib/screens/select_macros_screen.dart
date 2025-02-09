@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quick_plate/api/recipe_api.dart';
+import 'package:quick_plate/models/recipe.dart';
 import 'package:quick_plate/widgets/rect_slider_thumb_shape.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:http/http.dart' as http;
 
 class SelectMacrosScreen extends StatefulWidget {
   const SelectMacrosScreen({super.key});
@@ -13,7 +17,9 @@ class _SelectMacrosScreenState extends State<SelectMacrosScreen> {
   double _proteinSliderValue = 0.0;
   double _fatSliderValue = 5.0;
   double _caloriesSliderValue = 300.0;
-  double _fiberSliderValue = 0.0;
+  double _fibreSliderValue = 0.0;
+
+  bool _generating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,121 +38,132 @@ class _SelectMacrosScreenState extends State<SelectMacrosScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(48.0),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: SliderTheme(
-            data: const SliderThemeData(
-              trackHeight: 4.0,
-              thumbShape: RectSliderThumbShape(),
-              overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
-              rangeTrackShape: RectangularRangeSliderTrackShape(),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Carbs: ${_carbSliderValue.round()} g',
-                  style: sliderTextTheme,
-                ),
-                Slider(
-                  value: _carbSliderValue,
-                  min: 10.0,
-                  max: 150.0,
-                  divisions: 150,
-                  label: '${_carbSliderValue.round().toString()} g',
-                  onChanged: (value) {
-                    setState(() {
-                      _carbSliderValue = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 24.0),
-                Text(
-                  'Protein: ${_proteinSliderValue.round()} g',
-                  style: sliderTextTheme,
-                ),
-                Slider(
-                  value: _proteinSliderValue,
-                  min: 0.0,
-                  max: 150.0,
-                  divisions: 150,
-                  label: '${_proteinSliderValue.round().toString()} g',
-                  onChanged: (value) {
-                    setState(() {
-                      _proteinSliderValue = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 24.0),
-                Text(
-                  'Fat: ${_fatSliderValue.round()} g',
-                  style: sliderTextTheme,
-                ),
-                Slider(
-                  value: _fatSliderValue,
-                  min: 5.0,
-                  max: 100.0,
-                  divisions: 100,
-                  label: '${_fatSliderValue.round().toString()} g',
-                  onChanged: (value) {
-                    setState(() {
-                      _fatSliderValue = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 24.0),
-                Text(
-                  'Calories: ${_caloriesSliderValue.round()} kcal',
-                  style: sliderTextTheme,
-                ),
-                Slider(
-                  value: _caloriesSliderValue,
-                  min: 300,
-                  max: 1500.0,
-                  divisions: 150,
-                  label: '${_caloriesSliderValue.round().toString()} kcal',
-                  onChanged: (value) {
-                    setState(() {
-                      _caloriesSliderValue = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 24.0),
-                Text(
-                  'Fiber: ${_fiberSliderValue.round()} g',
-                  style: sliderTextTheme,
-                ),
-                Slider(
-                  value: _fiberSliderValue,
-                  min: 0.0,
-                  max: 30.0,
-                  divisions: 30,
-                  label: '${_fiberSliderValue.round().toString()} g',
-                  onChanged: (value) {
-                    setState(() {
-                      _fiberSliderValue = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 64.0),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16.0,
-                      horizontal: 32.0,
+      body: ModalProgressHUD(
+        inAsyncCall: _generating,
+        child: Padding(
+          padding: const EdgeInsets.all(48.0),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: SliderTheme(
+              data: const SliderThemeData(
+                trackHeight: 4.0,
+                thumbShape: RectSliderThumbShape(),
+                overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
+                rangeTrackShape: RectangularRangeSliderTrackShape(),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Carbs: ${_carbSliderValue.round()} g',
+                    style: sliderTextTheme,
+                  ),
+                  Slider(
+                    value: _carbSliderValue,
+                    min: 10.0,
+                    max: 150.0,
+                    divisions: 150,
+                    label: '${_carbSliderValue.round().toString()} g',
+                    onChanged: (value) {
+                      setState(() {
+                        _carbSliderValue = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 24.0),
+                  Text(
+                    'Protein: ${_proteinSliderValue.round()} g',
+                    style: sliderTextTheme,
+                  ),
+                  Slider(
+                    value: _proteinSliderValue,
+                    min: 0.0,
+                    max: 150.0,
+                    divisions: 150,
+                    label: '${_proteinSliderValue.round().toString()} g',
+                    onChanged: (value) {
+                      setState(() {
+                        _proteinSliderValue = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 24.0),
+                  Text(
+                    'Fat: ${_fatSliderValue.round()} g',
+                    style: sliderTextTheme,
+                  ),
+                  Slider(
+                    value: _fatSliderValue,
+                    min: 5.0,
+                    max: 100.0,
+                    divisions: 100,
+                    label: '${_fatSliderValue.round().toString()} g',
+                    onChanged: (value) {
+                      setState(() {
+                        _fatSliderValue = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 24.0),
+                  Text(
+                    'Calories: ${_caloriesSliderValue.round()} kcal',
+                    style: sliderTextTheme,
+                  ),
+                  Slider(
+                    value: _caloriesSliderValue,
+                    min: 300,
+                    max: 1500.0,
+                    divisions: 150,
+                    label: '${_caloriesSliderValue.round().toString()} kcal',
+                    onChanged: (value) {
+                      setState(() {
+                        _caloriesSliderValue = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 24.0),
+                  Text(
+                    'Fibre: ${_fibreSliderValue.round()} g',
+                    style: sliderTextTheme,
+                  ),
+                  Slider(
+                    value: _fibreSliderValue,
+                    min: 0.0,
+                    max: 30.0,
+                    divisions: 30,
+                    label: '${_fibreSliderValue.round().toString()} g',
+                    onChanged: (value) {
+                      setState(() {
+                        _fibreSliderValue = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 64.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        _generating = true;
+                      });
+
+                      final Recipe generatedRecipe =
+                          await RecipeApi.generateRecipe();
+                      debugPrint(generatedRecipe.toString());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16.0,
+                        horizontal: 32.0,
+                      ),
+                    ),
+                    child: Text(
+                      'Generate',
+                      style: theme.textTheme.headlineSmall!.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  child: Text(
-                    'Generate',
-                    style: theme.textTheme.headlineSmall!.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

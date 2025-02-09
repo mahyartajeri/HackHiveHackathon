@@ -41,6 +41,8 @@ dependencies:
   google_sign_in: ^6.2.2
   confirm_dialog: ^1.0.4
   flutter_riverpod: ^2.6.1
+  http: ^1.3.0
+  modal_progress_hud_nsn: ^0.5.1
 
 dev_dependencies:
   flutter_test:

@@ -79,15 +79,7 @@ class RecipesScreen extends ConsumerWidget {
                     final recipe = recipes[index];
                     return Card(
                       child: Column(
-                        children: [
-                          Image.network(recipe.imageUrl),
-                          Text(recipe.title),
-                          Text(recipe.description),
-                          Text(recipe.instructions),
-                          Text(recipe.ingredients.join(', ')),
-                          Text(recipe.steps.join(', ')),
-                          Text(recipe.timestamp.toString()),
-                        ],
+                        children: [],
                       ),
                     );
                   },

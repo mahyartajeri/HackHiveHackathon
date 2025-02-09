@@ -33,7 +33,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(''),
-              subtitle: Text(widget.recipes[index].description),
+              subtitle: Text(''),
               onTap: () {
                 // Navigator.of(context).push(
                 //   MaterialPageRoute(

@@ -143,9 +143,14 @@ def sectionedOutput(recipe_text):
     print(dish_name)
     return dish_name
 
-
-      
-    
+import duckduckgo_search as ds
+def getImage(query):
+    # Create an instance of DDGS
+    ddgs = ds.DDGS()
+    # Fetch image results, asking for only one result
+    results = ddgs.images(keywords=query)
+    # Return the URL of the first image if available
+    return results[0]['image'] if results else None
     
     
 from openai import OpenAI
@@ -184,7 +189,9 @@ def callAPI (requestedMacros):
     
     title = sectionedOutput(output)
     
-    return {"title": title, "recipe": output, "timestamp": time.now()}
+    image_url = getImage(title)
+    
+    return {"title": title, "recipe": output, "timestamp": time.now(), "image":image_url}
     # print("***********************************************\n")
     
     # #sectionedOutput(completion.choices[0].message.content)

@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '363326656915',
     projectId: 'quick-plate',
     storageBucket: 'quick-plate.firebasestorage.app',
+    iosClientId: '363326656915-ug2ba6so5s4ag8kvjnpkqg6ol8kdib0v.apps.googleusercontent.com',
     iosBundleId: 'com.example.quickPlate',
   );
 

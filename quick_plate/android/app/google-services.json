@@ -12,7 +12,12 @@
           "package_name": "com.example.quick_plate"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "363326656915-ikfdfkurge1s6a8mk3f1bceut716n8dm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDvBgb-YHqdob1u8TAJd5leS7rrez44Wss"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363326656915-ikfdfkurge1s6a8mk3f1bceut716n8dm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "363326656915-ug2ba6so5s4ag8kvjnpkqg6ol8kdib0v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quickPlate"
+              }
+            }
+          ]
         }
       }
     }

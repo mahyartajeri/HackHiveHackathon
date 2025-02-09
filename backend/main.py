@@ -15,7 +15,8 @@ async def gen_recipe(request: RecipeRequest):
     return {
         "message": "Recipe generated successfully!",
         "title":response.title,
-        "recipe": response.recipe
+        "recipe": response.recipe,
+        "timestamp": response.timestamp,
         
     }
 

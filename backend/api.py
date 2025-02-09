@@ -89,12 +89,12 @@ selection = []
     
 def getIngredients(macro_request):
     
-    for macro in USER_REQUEST:
+    for macro in macro_request:
         top_modifier = False
         food = ""
         food_group = random.choice(GROUPS[macro])
         #Check if they need "high" amount for this macro
-        if USER_REQUEST[macro] > avgOfRange(NUTRITION_RANGES[macro]):
+        if macro_request[macro] > avgOfRange(NUTRITION_RANGES[macro]):
             top_modifier = True
             
         # Filter the foods to include only those in the selected food group

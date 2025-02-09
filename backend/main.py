@@ -1,25 +1,30 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from api import callAPI
+import json
 
 app = FastAPI()
 
 
 # Define a request model using Pydantic for input validation.
 class RecipeRequest(BaseModel):
-    # For example, you might expect a list of ingredients.
-    data: dict
+    # One field called data, which is a json string.
+    data: str
 
 
 # POST endpoint at /genRecipe
 @app.post("/genRecipe")
 async def gen_recipe(request: RecipeRequest):
-    response = callAPI(request.data)
+    # convert data from json string to python dict
+
+    response = callAPI(json.loads(request.data))
+    # print(response)
     return {
         "message": "Recipe generated successfully!",
-        "title": response.title,
-        "recipe": response.recipe,
-        "timestamp": response.timestamp,
+        "title": response["title"],
+        "recipe": response["recipe"],
+        "timestamp": response["timestamp"],
+        "imageUrl": response["image"],
     }
 
 
@@ -27,4 +32,4 @@ async def gen_recipe(request: RecipeRequest):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

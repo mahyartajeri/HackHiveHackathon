@@ -150,15 +150,52 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     }
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.primary,
       body: _loadingState == LoadingState.done
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    'QuickPlate',
+                    style: theme.textTheme.displayLarge!.copyWith(
+                      color: theme.primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 66,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Macros made easy',
+                    style: theme.textTheme.displaySmall!.copyWith(
+                      color: theme.primaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32,
+                      ),
+                    ),
                     onPressed: signInWithGoogle,
-                    child: const Text('Sign in with Google'),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.account_circle_outlined,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                        const SizedBox(width: 16),
+                        Text(
+                          'Sign in with Google',
+                          style: theme.textTheme.headlineMedium!.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   TextButton(
                     onPressed: () => widget.onTapTermsAndConditions(context),

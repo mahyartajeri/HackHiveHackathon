@@ -28,6 +28,17 @@ class UserNotifier extends StateNotifier<MyUser> {
   bool isUserEmpty() {
     return state.uid.isEmpty;
   }
+
+  void addRecipe(Recipe recipe) {
+    final recipes = state.recipes;
+    recipes.add(recipe);
+    state = MyUser(
+      uid: state.uid,
+      email: state.email,
+      name: state.name,
+      recipes: recipes,
+    );
+  }
 }
 
 final userProvider = StateNotifierProvider<UserNotifier, MyUser>((ref) {

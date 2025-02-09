@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Macros {
   double carbs;
   double protein;
@@ -13,14 +15,16 @@ class Macros {
     required this.calories,
   });
 
-  toJson() {
-    return {
+  String toJson() {
+    final data = {
       "Carbs": carbs,
       "Protein": protein,
       "Fats": fat,
       "Fibre": fibre,
       "Calories": calories,
     };
+
+    return json.encode(data);
   }
 }
 

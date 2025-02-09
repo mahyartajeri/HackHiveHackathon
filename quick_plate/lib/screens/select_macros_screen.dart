@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quick_plate/api/recipe_api.dart';
+import 'package:quick_plate/models/macros.dart';
 import 'package:quick_plate/models/recipe.dart';
+import 'package:quick_plate/screens/recipe_view_screen.dart';
 import 'package:quick_plate/widgets/rect_slider_thumb_shape.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:http/http.dart' as http;
@@ -144,10 +146,42 @@ class _SelectMacrosScreenState extends State<SelectMacrosScreen> {
                       setState(() {
                         _generating = true;
                       });
-
-                      final Recipe generatedRecipe =
-                          await RecipeApi.generateRecipe();
+                      final Macros macros = Macros(
+                        carbs: _carbSliderValue,
+                        protein: _proteinSliderValue,
+                        fat: _fatSliderValue,
+                        calories: _caloriesSliderValue,
+                        fibre: _fibreSliderValue,
+                      );
+                      final Recipe? generatedRecipe =
+                          await RecipeApi.generateRecipe(macros);
                       debugPrint(generatedRecipe.toString());
+
+                      if (generatedRecipe != null) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => RecipeViewScreen.generated(
+                              recipe: generatedRecipe,
+                              onRegenerate: () async {
+                                setState(() {
+                                  _generating = true;
+                                });
+                                final Recipe? generatedRecipe =
+                                    await RecipeApi.generateRecipe(macros);
+
+                                setState(() {
+                                  _generating = false;
+                                });
+                                return generatedRecipe;
+                              },
+                            ),
+                          ),
+                        );
+                      }
+
+                      setState(() {
+                        _generating = false;
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(

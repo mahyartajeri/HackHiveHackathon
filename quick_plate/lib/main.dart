@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quick_plate/models/my_user.dart';
+import 'package:quick_plate/models/recipe.dart';
 import 'package:quick_plate/screens/auth_screen.dart';
 import 'package:quick_plate/screens/recipes_screen.dart';
+import 'package:quick_plate/screens/terms_and_conditions.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quick_plate/providers/user_provider.dart';
@@ -64,6 +67,23 @@ class MyHomePage extends ConsumerWidget {
     ref.read(userProvider.notifier).setUser(user);
   }
 
+  Future<List<Recipe>> _fetchRecipes() async {
+    List<Recipe> recipes = [];
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('recipes')
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        // print(doc.data());
+        recipes.add(Recipe.fromMap(doc.data()));
+      });
+    });
+
+    return recipes;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -85,24 +105,32 @@ class MyHomePage extends ConsumerWidget {
             // after 1ms delay, update provider with user data
             Future.delayed(const Duration(milliseconds: 1), () {
               if (ref.read(userProvider.notifier).isUserEmpty()) {
-                _updateUserProvider(
-                  MyUser(
-                    uid: snapshot.data!.uid,
-                    email: snapshot.data!.email!,
-                    name: snapshot.data!.displayName!,
-                    recipes: [],
-                  ),
-                  ref,
-                );
+                _fetchRecipes().then((recipes) {
+                  _updateUserProvider(
+                    MyUser(
+                      uid: snapshot.data!.uid,
+                      email: snapshot.data!.email!,
+                      name: snapshot.data!.displayName!,
+                      recipes: recipes,
+                    ),
+                    ref,
+                  );
+                });
               }
             });
 
             return RecipesScreen(
-              recipes: ref.read(userProvider).recipes,
+              recipes: ref.watch(userProvider).recipes,
             );
           } else {
             return AuthScreen(
-              onTapTermsAndConditions: (context) {},
+              onTapTermsAndConditions: (context) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const TermsAndConditions(),
+                  ),
+                );
+              },
             );
           }
         },

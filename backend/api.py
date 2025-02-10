@@ -169,7 +169,7 @@ import prompts
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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",
+    api_key="YOUR_KEY_HERE",
 )
 
 
@@ -179,7 +179,7 @@ def callAPI(requestedMacros):
 
     # client = OpenAI(
     # base_url="https://openrouter.ai/api/v1",
-    # api_key="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",
+    # api_key="YOUR_KEY_HERE",
     # )
 
     completion = client.chat.completions.create(
@@ -222,7 +222,7 @@ def callAPI(requestedMacros):
 
 #     # client = OpenAI(
 #     # base_url="https://openrouter.ai/api/v1",
-#     # api_key="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",
+#     # api_key="YOUR_KEY_HERE",
 #     # )
 
 #     completion = client.chat.completions.create(
